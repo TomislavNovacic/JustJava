@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Samo Java</string>
+    <string name="order_summary_name">Ime: <xliff:g id="name" example="Amy">%s</xliff:g></string>
+    <string name="thank_you">Hvala!</string>
+    <string name="toppings">Preljevi</string>
+    <string name="chocolate">Čokolada</string>
+    <string name="order">NARUČI</string>
+    <string name="quantity">Količina</string>
+    <string name="type_your_name">Upiši svoje ime</string>
+    <string name="whipped_cream">Šlag</string>
+    <string name="order_summary_chocolate">Dodaj čokoladu? <xliff:g id="CheckChocolate">%b</xliff:g></string>
+    <string name="order_summary_email_subject">Samo Java narudžba za <xliff:g id="subject" example="tomi">%s</xliff:g></string>
+    <string name="order_summary_quantity">Količina: <xliff:g id="quantity" example="5">%d</xliff:g></string>
+    <string name="order_summary_total">Ukupno: <xliff:g id="total" example="21 kn">%s</xliff:g></string>
+    <string name="order_summary_whipped_cream">Dodaj šlag? <xliff:g id="CheckWhipped" example="true">%b</xliff:g></string>
+</resources>
