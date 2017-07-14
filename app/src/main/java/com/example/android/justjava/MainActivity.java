@@ -1,16 +1,13 @@
-/**
- * Add your package below. Package name can be found in the project's AndroidManifest.xml file.
- * This is the package name our example uses:
- *
- * package com.example.android.justjava; 
- */
+
 package com.example.android.justjava;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,70 +15,83 @@ import android.widget.Toast;
 
 import java.text.NumberFormat;
 
-/**
- * This app displays an order form to order coffee.
- */
 public class MainActivity extends AppCompatActivity {
 
     int quantity = 2;
+    EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
-    /**
-     * This method is called when the order button is clicked.
-     */
-    public void submitOrder(View view) {
-        /*String priceMessage ="Total: $" + (quantity*5);
-        priceMessage = priceMessage + "\nThank you!";
-        displayMessage(priceMessage);*/
 
-        // Methods can be used with strings or ints together to initialize variable
-       // String price = "Total: " + calculatePrice() + " kn" + "\nThank you!!!";
-        //displayMessage(price);
+        Button submitOrder = (Button) findViewById(R.id.submitOrder);
+        Button increment = (Button) findViewById(R.id.increment);
+        Button decrement = (Button) findViewById(R.id.decrement);
 
-        boolean isWhipped = CheckWhipped();
-        CheckBox checkBox = (CheckBox) findViewById(R.id.chocolate_checkbox);
-        boolean hasChocolate = checkBox.isChecked();
-        String userName = CheckName();
-        int basePrice = 5;
-        if(isWhipped) {
-            basePrice += 1;
-        }
-        if (hasChocolate){
-            basePrice += 2;
-        }
-        int orderPrice = basePrice * quantity;
+        submitOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        String orderSummary = createOrderSummary(orderPrice, isWhipped, hasChocolate, userName);;
-        // displayMessage(orderSummary);
+                boolean isWhipped = CheckWhipped();
+                boolean hasChocolate = CheckChocolate();
+                String userName = CheckName();
 
-            Intent intent = new Intent(Intent.ACTION_SENDTO);
-            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.order_summary_email_subject,userName));
-            intent.putExtra(Intent. EXTRA_TEXT,orderSummary);
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
+                if(TextUtils.isEmpty(userName)) {
+                    editText.setError("This field cannot be empty.");
+                    return;
+                }
+
+                int basePrice = 5;
+
+                if(isWhipped) {
+                    basePrice += 1;
+                }
+
+                if (hasChocolate){
+                    basePrice += 2;
+                }
+
+                int orderPrice = basePrice * quantity;
+
+                String orderSummary = createOrderSummary(orderPrice, isWhipped, hasChocolate, userName);
+
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:"));
+                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.order_summary_email_subject,userName));
+                intent.putExtra(Intent. EXTRA_TEXT,orderSummary);
+
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
             }
-        }
+        });
 
-    /**
-     * Calculates the price of the order.
-     *
-     *
-     */
-    private int calculatePrice(boolean isWhipped, boolean hasChocolate, int quantity) {
-        int basePrice = 5;
-        if(isWhipped) {
-            basePrice += 1;
-        }
-        if (hasChocolate){
-            basePrice += 2;
-        }
-        int orderPrice = basePrice * quantity;
-        return orderPrice;
+        increment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(quantity <= 99) {
+                    quantity = quantity + 1;
+                    displayQuantity(quantity);
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "You cannot order more than 100 coffe's!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        decrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(quantity >= 2) {
+                    quantity = quantity - 1;
+                    displayQuantity(quantity);
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "You cannot order less than 1 coffe!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private String createOrderSummary (int orderPrice, boolean hasWhippedCream, boolean hasChocolate, String userName) {
@@ -93,52 +103,24 @@ public class MainActivity extends AppCompatActivity {
         summary += "\n" + getString(R.string.thank_you);
         return summary;
     }
-    /**
-     * This method displays the given quantity value on the screen.
-     */
+
     private void displayQuantity(int number) {
         TextView quantityTextView = (TextView) findViewById(R.id.quantity_text_view);
-        quantityTextView.setText("" + number);
-    }
-    /**
-     * This method displays the given price on the screen.
-     */
-    /*private void displayPrice(int number) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
-    }*/
-    /**
-     * This method displays the given text on the screen.
-     */
-    public void decrement(View view) {
-        if(quantity >= 2) {
-            quantity = quantity - 1;
-            displayQuantity(quantity);
-        }
-        else {
-            Toast.makeText(MainActivity.this, "You cannot order less than 1 coffe!",Toast.LENGTH_SHORT).show();
-            return;
-        }
-    }
-    public void increment(View view) {
-        if(quantity <= 99) {
-            quantity = quantity + 1;
-            displayQuantity(quantity);
-        }
-        else {
-            Toast.makeText(MainActivity.this, "You cannot order more than 100 coffe's!",Toast.LENGTH_SHORT).show();
-            return;
-        }
+        quantityTextView.setText(String.valueOf(number));
     }
 
     public boolean CheckWhipped () {
         CheckBox checkBox = (CheckBox) findViewById(R.id.whipped_cream_checkbox);
-        boolean isWhipped = checkBox.isChecked();
-        return isWhipped;
+        return checkBox.isChecked();
+    }
+
+    public boolean CheckChocolate () {
+        CheckBox checkBox = (CheckBox) findViewById(R.id.chocolate_checkbox);
+        return checkBox.isChecked();
     }
 
     public String CheckName () {
-        EditText editText = (EditText) findViewById(R.id.name_edittext_view);
+        editText = (EditText) findViewById(R.id.name_edittext_view);
         return editText.getText().toString();
     }
 }

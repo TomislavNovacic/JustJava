@@ -14,4 +14,7 @@
     <string name="order_summary_quantity">Količina: <xliff:g id="quantity" example="5">%d</xliff:g></string>
     <string name="order_summary_total">Ukupno: <xliff:g id="total" example="21 kn">%s</xliff:g></string>
     <string name="order_summary_whipped_cream">Dodaj šlag? <xliff:g id="CheckWhipped" example="true">%b</xliff:g></string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="placeholder">2</string>
 </resources>

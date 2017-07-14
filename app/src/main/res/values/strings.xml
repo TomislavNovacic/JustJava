@@ -17,4 +17,7 @@
     <string name="thank_you">Thank you!</string>
 
     <string name="order_summary_email_subject">Just Java order for <xliff:g id="subject" example="tomi">%s</xliff:g></string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="placeholder">2</string>
 </resources>
